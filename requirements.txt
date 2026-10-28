@@ -1,0 +1,16 @@
+numpy>=1.24.0
+pandas>=2.0.0
+statsforecast>=1.5.0
+catboost>=1.2.0
+pymysql>=1.1.0
+sqlalchemy>=2.0.0
+python-dotenv>=1.0.0
+flask>=3.0.0
+flask-cors>=4.0.0
+bcrypt>=4.0.0
+google-genai>=0.1.0
+pytest>=8.0.0
+prophet>=1.1.0
+reportlab>=4.0.0
+matplotlib>=3.7.0
+

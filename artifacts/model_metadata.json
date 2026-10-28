@@ -1,0 +1,49 @@
+{
+  "model_name": "catboost_demand",
+  "target": "units_sold",
+  "overall_mae": 2.753089414857024,
+  "overall_rmse": 7.170948393148066,
+  "overall_wape": 0.40751783072538733,
+  "features": [
+    "product_id",
+    "store_id",
+    "sales_channel",
+    "category",
+    "subcategory",
+    "brand",
+    "region",
+    "season",
+    "festival_name",
+    "promotion_type",
+    "month",
+    "week_number",
+    "holiday_flag",
+    "lag_1_sales",
+    "lag_4_sales",
+    "rolling_4_week_avg",
+    "unit_price",
+    "discount_pct",
+    "promotion_flag",
+    "opening_stock",
+    "stock_received",
+    "supplier_lead_time_days"
+  ],
+  "categorical_features": [
+    "product_id",
+    "store_id",
+    "sales_channel",
+    "category",
+    "subcategory",
+    "brand",
+    "region",
+    "season",
+    "festival_name",
+    "promotion_type"
+  ],
+  "cutoff_date": "2026-09-14",
+  "series_key": [
+    "product_id",
+    "store_id",
+    "sales_channel"
+  ]
+}

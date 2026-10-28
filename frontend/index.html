@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="RetailForecaster — Dual-Workspace Enterprise Demand Forecasting & AI Analytics Platform. Developer ML Evaluation & Retailer Business Planning.">
+    <title>RetailForecaster — Enterprise Demand Analytics</title>
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chart.js for enterprise data visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Markdown Parser for AI Assistant -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <link rel="stylesheet" href="index.css?v=20261028_04">
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════════════════════════
+         AUTH OVERLAY — Login / Signup
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="auth-overlay" id="auth-overlay">
+        <div class="auth-particles" id="auth-particles"></div>
+        <div class="auth-container">
+            <!-- Brand Section -->
+            <div class="auth-brand">
+                <div class="auth-brand-icon">
+                    <i data-lucide="trending-up"></i>
+                </div>
+                <h1 class="auth-brand-title">RetailForecaster</h1>
+                <span class="auth-brand-badge">Enterprise Demand Analytics</span>
+                <p class="auth-brand-subtitle">Dual-Workspace AI Forecasting & Inventory Intelligence Platform</p>
+            </div>
+
+            <!-- Login Form Card -->
+            <div class="auth-card" id="auth-login-card">
+                <div class="auth-card-header">
+                    <h2>Sign In</h2>
+                    <p>Enter your credentials to access your designated workspace</p>
+                </div>
+
+                <div class="auth-role-hint">
+                    <div class="auth-role-pill">
+                        <i data-lucide="terminal" class="icon-xs"></i>
+                        <span><strong>Admin</strong> &rarr; Developer Studio</span>
+                    </div>
+                    <div class="auth-role-pill">
+                        <i data-lucide="store" class="icon-xs"></i>
+                        <span><strong>Retailer</strong> &rarr; Demand Explorer</span>
+                    </div>
+                </div>
+
+                <form id="login-form" class="auth-form" onsubmit="handleLogin(event)" autocomplete="off">
+                    <div class="auth-field">
+                        <label for="login-username">Username</label>
+                        <div class="auth-input-wrap">
+                            <i data-lucide="user" class="auth-input-icon"></i>
+                            <input type="text" id="login-username" placeholder="Enter username" required
+                                autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="auth-field">
+                        <label for="login-password">Password</label>
+                        <div class="auth-input-wrap">
+                            <i data-lucide="lock" class="auth-input-icon"></i>
+                            <input type="password" id="login-password" placeholder="Enter password" required
+                                autocomplete="current-password">
+                        </div>
+                    </div>
+                    <div class="auth-error" id="login-error"></div>
+                    <button type="submit" class="auth-btn" id="login-submit-btn">
+                        <span class="auth-btn-text">
+                            <i data-lucide="log-in" class="btn-icon"></i>
+                            <span>Sign In</span>
+                        </span>
+                        <span class="auth-btn-loader" style="display:none;"><i data-lucide="loader-2"
+                                class="spin"></i></span>
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    <span>Need a retailer account?</span>
+                    <a href="#" onclick="showSignupCard(event)">Create Account</a>
+                </div>
+            </div>
+
+            <!-- Signup Form Card -->
+            <div class="auth-card" id="auth-signup-card" style="display: none;">
+                <div class="auth-card-header">
+                    <h2>Create Account</h2>
+                    <p>Sign up for new Retailer Planning & Forecast Explorer access</p>
+                </div>
+
+                <div class="auth-role-hint auth-role-hint-signup">
+                    <i data-lucide="shield-check" class="icon-xs"></i>
+                    <span>New accounts receive authenticated <strong>Retailer Workspace</strong> permissions.</span>
+                </div>
+
+                <form id="signup-form" class="auth-form" onsubmit="handleSignup(event)" autocomplete="off">
+                    <div class="auth-field">
+                        <label for="signup-username">Username</label>
+                        <div class="auth-input-wrap">
+                            <i data-lucide="user-plus" class="auth-input-icon"></i>
+                            <input type="text" id="signup-username" placeholder="Choose a username" required
+                                minlength="3" autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="auth-field">
+                        <label for="signup-password">Password</label>
+                        <div class="auth-input-wrap">
+                            <i data-lucide="lock" class="auth-input-icon"></i>
+                            <input type="password" id="signup-password"
+                                placeholder="Create a password (min 4 characters)" required minlength="4"
+                                autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="auth-field">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <div class="auth-input-wrap">
+                            <i data-lucide="shield-check" class="auth-input-icon"></i>
+                            <input type="password" id="signup-confirm-password" placeholder="Confirm your password"
+                                required minlength="4" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="auth-error" id="signup-error"></div>
+                    <button type="submit" class="auth-btn" id="signup-submit-btn">
+                        <span class="auth-btn-text">
+                            <i data-lucide="sparkles" class="btn-icon"></i>
+                            <span>Create Retailer Account</span>
+                        </span>
+                        <span class="auth-btn-loader" style="display:none;"><i data-lucide="loader-2"
+                                class="spin"></i></span>
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    <span>Already have an account?</span>
+                    <a href="#" onclick="showLoginCard(event)">Sign In</a>
+                </div>
+            </div>
+
+            <!-- Footer Meta Note -->
+            <div class="auth-footer-note">
+                <span>Enterprise ML Platform</span>
+                <span class="auth-dot">•</span>
+                <span>CatBoost & XGBoost Engine</span>
+                <span class="auth-dot">•</span>
+                <span>Role-Based Access</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-layout" id="app-layout" style="display: none;">
+
+        <!-- Mobile Sidebar Backdrop Overlay -->
+        <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             1. SIDEBAR NAVIGATION (DUAL WORKSPACE AWARE)
+             ═══════════════════════════════════════════════════════════ -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <i data-lucide="trending-up" class="brand-icon"></i>
+                    </div>
+                    <div class="brand-info">
+                        <span class="brand-title">RetailForecaster</span>
+                        <span class="brand-badge" id="sidebar-role-badge">Developer Studio</span>
+                    </div>
+                </div>
+                <button class="btn-icon-toggle" id="btn-collapse-sidebar" title="Collapse sidebar"
+                    aria-label="Toggle sidebar">
+                    <i data-lucide="panel-left-close"></i>
+                </button>
+            </div>
+
+            <!-- Workspace Role Indicator (set by auth, no switcher) -->
+            <!-- <div class="sidebar-workspace-select-wrap">
+                <div class="workspace-role-indicator" id="workspace-role-indicator">
+                    <i data-lucide="shield" class="icon-xs"></i>
+                    <span id="workspace-role-text">Developer</span>
+                </div>
+            </div> -->
+
+            <!-- ── A. DEVELOPER VIEW SIDEBAR NAVIGATION ── -->
+            <div id="sidebar-section-dev">
+                <div class="sidebar-section-label">Developer Navigation</div>
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" data-tab="dev-dataset" id="nav-dev-dataset"
+                        data-tooltip="Dataset & Quality" title="Dataset & Quality">
+                        <i data-lucide="database" class="nav-icon"></i>
+                        <span class="nav-label">Dataset & Quality</span>
+                        <span class="nav-pill" id="pill-dataset-status">Clean</span>
+                    </button>
+                    <button class="nav-item" data-tab="dev-evaluation" id="nav-dev-evaluation"
+                        data-tooltip="Model Evaluation" title="Model Evaluation">
+                        <i data-lucide="check-check" class="nav-icon"></i>
+                        <span class="nav-label">Model Evaluation</span>
+                    </button>
+                    <button class="nav-item" data-tab="dev-comparison" id="nav-dev-comparison"
+                        data-tooltip="Model Comparison" title="Model Comparison">
+                        <i data-lucide="git-compare" class="nav-icon"></i>
+                        <span class="nav-label">Model Comparison</span>
+                        <span class="nav-tag">5 Models</span>
+                    </button>
+                    <button class="nav-item" data-tab="dev-history" id="nav-dev-history"
+                        data-tooltip="Experiment History" title="Experiment History">
+                        <i data-lucide="history" class="nav-icon"></i>
+                        <span class="nav-label">Experiment History</span>
+                    </button>
+                    <button class="nav-item" data-tab="dev-settings" id="nav-dev-settings" data-tooltip="Settings"
+                        title="Settings">
+                        <i data-lucide="sliders" class="nav-icon"></i>
+                        <span class="nav-label">Settings</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- ── B. RETAILER VIEW SIDEBAR NAVIGATION ── -->
+            <div id="sidebar-section-retail" style="display: none;">
+                <div class="sidebar-section-label">Retailer Navigation</div>
+                <nav class="sidebar-nav">
+                    <button class="nav-item" data-tab="ret-forecasts" id="nav-ret-forecasts"
+                        data-tooltip="Demand Forecasts" title="Demand Forecasts">
+                        <i data-lucide="compass" class="nav-icon"></i>
+                        <span class="nav-label">Demand Forecasts</span>
+                        <!-- <span class="nav-pill" id="pill-ret-forecast-count">—</span> -->
+                    </button>
+                    <button class="nav-item" data-tab="ret-overview" id="nav-ret-overview"
+                        data-tooltip="Business Overview" title="Business Overview">
+                        <i data-lucide="layout-dashboard" class="nav-icon"></i>
+                        <span class="nav-label">Business Overview</span>
+                    </button>
+                    <button class="nav-item" data-tab="ret-insights" id="nav-ret-insights"
+                        data-tooltip="Product Insights" title="Product Insights">
+                        <i data-lucide="sparkles" class="nav-icon"></i>
+                        <span class="nav-label">Product Insights</span>
+                        <!-- <span class="nav-pill badge-success-subtle">Insights</span> -->
+                    </button>
+                    <button class="nav-item" data-tab="ret-chat" id="nav-ret-chat" data-tooltip="AI Assistant"
+                        title="AI Assistant">
+                        <i data-lucide="bot" class="nav-icon"></i>
+                        <span class="nav-label">AI Assistant</span>
+                        <span class="nav-tag">Gemini</span>
+                    </button>
+                    <button class="nav-item" data-tab="ret-reports" id="nav-ret-reports" data-tooltip="Reports"
+                        title="Reports">
+                        <i data-lucide="file-text" class="nav-icon"></i>
+                        <span class="nav-label">Reports</span>
+                    </button>
+                    <button class="nav-item" data-tab="ret-settings" id="nav-ret-settings" data-tooltip="Settings"
+                        title="Settings">
+                        <i data-lucide="settings" class="nav-icon"></i>
+                        <span class="nav-label">Settings</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- <div class="sidebar-footer">
+                <div class="api-status" id="api-status">
+                    <span class="status-dot"></span>
+                    <div class="status-details">
+                        <span class="status-text font-medium">Checking API...</span>
+                        <span class="status-sub">Retail ML Server</span>
+                    </div>
+                </div>
+            </div> -->
+        </aside>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             2. MAIN APPLICATION CONTENT AREA
+             ═══════════════════════════════════════════════════════════ -->
+        <div class="main-wrapper">
+
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="btn-icon mobile-menu-toggle" id="btn-mobile-menu" aria-label="Open navigation menu">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="page-title-box">
+                        <div class="breadcrumbs">
+                            <span id="breadcrumb-workspace">Developer View</span>
+                            <i data-lucide="chevron-right" class="breadcrumb-sep"></i>
+                            <span class="breadcrumb-current" id="breadcrumb-title">Dataset & Quality</span>
+                        </div>
+                        <h1 class="page-heading" id="page-heading">Dataset Integrity & Validation</h1>
+                    </div>
+                </div>
+
+                <!-- Topbar Center — Role display -->
+                <!-- <div class="topbar-center">
+                    <div class="workspace-role-display" id="topbar-role-display">
+                        <span class="topbar-role-badge" id="topbar-role-badge-text">
+                            <i data-lucide="code-2" class="btn-icon"></i>
+                            <span>Developer View</span>
+                        </span>
+                    </div>
+                </div> -->
+
+                <div class="topbar-actions">
+                    <!-- Developer Action Buttons -->
+                    <div class="actions-group-dev" id="actions-dev">
+                        <button class="btn btn-secondary" id="btn-run-benchmark" onclick="runBenchmarkModal()"
+                            title="Run rolling-origin 5-model evaluation">
+                            <i data-lucide="play" class="btn-icon"></i>
+                            <span class="btn-label-desktop">Run 5-Model Benchmark</span>
+                            <span class="btn-label-mobile">Benchmark</span>
+                        </button>
+                    </div>
+
+                    <!-- Retailer Action Buttons -->
+                    <div class="actions-group-retail" id="actions-retail" style="display: none;">
+                        <button class="btn btn-primary" id="btn-gen-forecast" onclick="generateForecast(this)"
+                            title="Generate 4-week recursive forecasts with approved model">
+                            <i data-lucide="refresh-cw" class="btn-icon" id="btn-gen-forecast-icon"></i>
+                            <span class="btn-label-desktop" id="btn-gen-forecast-label">Generate Forecast</span>
+                            <span class="btn-label-mobile">Forecast</span>
+                        </button>
+                    </div>
+
+                    <!-- <button class="btn btn-outline btn-icon-only" onclick="refreshCurrentWorkspace()"
+                        title="Refresh live telemetry">
+                        <i data-lucide="rotate-ccw" class="btn-icon"></i>
+                    </button> -->
+
+                    <!-- User Menu / Logout -->
+                    <div class="topbar-user-menu" id="topbar-user-menu">
+                        <button class="btn btn-outline user-menu-btn" id="btn-user-menu" onclick="toggleUserDropdown()"
+                            title="Account">
+                            <i data-lucide="user-circle" class="btn-icon"></i>
+                            <span class="user-menu-name" id="user-menu-name">User</span>
+                            <i data-lucide="chevron-down" class="icon-xs"></i>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown" style="display:none;">
+                            <button class="user-dropdown-item" onclick="openUserProfileModal()">
+                                <i data-lucide="user" class="icon-xs"></i>
+                                <span>My Profile</span>
+                            </button>
+                            <button class="user-dropdown-item user-dropdown-item-danger" onclick="handleLogout()">
+                                <i data-lucide="log-out" class="icon-xs"></i>
+                                <span>Sign Out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Workspace Container -->
+            <main class="content-area">
+
+                <!-- ╔══════════════════════════════════════════════════════╗
+                     ║ WORKSPACE 1: DEVELOPER VIEW PANES                  ║
+                     ╚══════════════════════════════════════════════════════╝ -->
+
+                <!-- ── 1.1 DATASET & QUALITY PANE ── -->
+                <section class="tab-pane active" id="tab-dev-dataset">
+                    <!-- Dataset Source Banner -->
+                    <div class="card dataset-banner-card">
+                        <div class="dataset-banner-header">
+                            <div class="banner-icon-box bg-gold-subtle">
+                                <i data-lucide="database" class="icon-md text-gold"></i>
+                            </div>
+                            <div class="banner-info">
+                                <div class="badge-row">
+                                    <span class="badge badge-success">Ingestion Validated</span>
+                                    <span class="badge badge-neutral">MySQL Store / CSV Raw</span>
+                                    <span class="badge badge-accent">104 Contiguous Weeks</span>
+                                </div>
+                                <h2 class="banner-title">Retail Demand Dataset (1,024,772 Observations)</h2>
+                                <p class="banner-desc">Historical sales records across 1,000 product SKUs, 30 retail
+                                    store locations, and 2 sales channels (Offline Stores & Online eCommerce).</p>
+                            </div>
+                            <div class="banner-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <a href="/download-quality-report" download="data_quality_report.md"
+                                    class="btn btn-primary btn-sm">
+                                    <i data-lucide="file-text" class="btn-icon"></i>
+                                    <span>Download Quality Report (MD)</span>
+                                </a>
+                                <a href="/download-quality-csv" download="data_quality_report.csv"
+                                    class="btn btn-secondary btn-sm">
+                                    <i data-lucide="download" class="btn-icon"></i>
+                                    <span>Export Audit (CSV)</span>
+                                </a>
+                                <a href="/download-dataset-csv" download="retail_dataset_clean.csv"
+                                    class="btn btn-outline btn-sm">
+                                    <i data-lucide="database" class="btn-icon"></i>
+                                    <span>Export Dataset (CSV)</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Metrics Grid -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Clean Records Loaded</span>
+                                <div class="kpi-icon-wrap bg-lavender-subtle">
+                                    <i data-lucide="check-circle-2" class="kpi-icon text-lavender"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="dq-total-rows">1,003,500</span>
+                                <span class="kpi-badge badge-success">Valid</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">1,024,772 total raw ingested</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Missing Values / Nulls</span>
+                                <div class="kpi-icon-wrap bg-gold-subtle">
+                                    <i data-lucide="filter" class="kpi-icon text-gold"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="dq-missing-rows">40,264</span>
+                                <span class="kpi-badge badge-neutral">Imputed / Dropped</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Initial lag window warmups</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Duplicate Series / Weeks</span>
+                                <div class="kpi-icon-wrap bg-taupe-subtle">
+                                    <i data-lucide="copy" class="kpi-icon text-taupe"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="dq-duplicates">0</span>
+                                <span class="kpi-badge badge-success">Resolved</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Strict primary key uniqueness</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Zero Demand Sparsity</span>
+                                <div class="kpi-icon-wrap bg-beige-subtle">
+                                    <i data-lucide="pie-chart" class="kpi-icon text-charcoal"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="dq-zero-pct">36.7%</span>
+                                <span class="kpi-badge badge-neutral">Intermittent</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Treated with lag-4 and recursive rollings</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Ingestion & Quality Audit Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Data Ingestion & Integrity Audit Checks</h2>
+                                <p class="card-subtitle">Automated validation rules executed before feeding features to
+                                    models</p>
+                            </div>
+                            <span class="badge badge-accent">Pre-Training Validation</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Integrity Check Rule</th>
+                                        <th>Target / Field</th>
+                                        <th>Expected Rule</th>
+                                        <th>Observed Result</th>
+                                        <th>Validation Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-medium">Primary Key Uniqueness</td>
+                                        <td><code>product_id + store_id + sales_channel + week</code></td>
+                                        <td>1 row per series per week</td>
+                                        <td>0 duplicate observations in clean dataset</td>
+                                        <td><span class="badge badge-success"><i data-lucide="check"
+                                                    class="icon-xs"></i> Passed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Contiguous Calendar Weeks</td>
+                                        <td><code>week_start_date</code></td>
+                                        <td>Standardized weekly frequency (W-MON)</td>
+                                        <td>104 consecutive weeks, 0 gaps</td>
+                                        <td><span class="badge badge-success"><i data-lucide="check"
+                                                    class="icon-xs"></i> Passed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Non-Negative Target Values</td>
+                                        <td><code>units_sold</code></td>
+                                        <td><code>units_sold >= 0</code></td>
+                                        <td>All negative returns cleaned</td>
+                                        <td><span class="badge badge-success"><i data-lucide="check"
+                                                    class="icon-xs"></i> Passed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Price Anomaly Detection</td>
+                                        <td><code>base_price, selling_price</code></td>
+                                        <td><code>selling_price <= base_price</code></td>
+                                        <td>No inverted price records detected</td>
+                                        <td><span class="badge badge-success"><i data-lucide="check"
+                                                    class="icon-xs"></i> Passed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-medium">Categorical Parity</td>
+                                        <td><code>category, store_id, sales_channel</code></td>
+                                        <td>Consistent naming across splits</td>
+                                        <td>100% categorical encoding alignment</td>
+                                        <td><span class="badge badge-success"><i data-lucide="check"
+                                                    class="icon-xs"></i> Passed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 1.2 MODEL EVALUATION PANE ── -->
+                <section class="tab-pane" id="tab-dev-evaluation">
+                    <!-- Model Inspector Control Bar -->
+                    <div class="card model-inspector-card">
+                        <div class="inspector-header">
+                            <div>
+                                <span class="sub-label">Model Evaluation Inspector</span>
+                                <h2 class="card-title">Technical Performance & Holdout Diagnostics</h2>
+                            </div>
+                            <div class="inspector-controls"
+                                style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                <label for="eval-model-select" class="form-label font-medium"
+                                    style="margin-bottom: 0;">Select Model:</label>
+                                <select id="eval-model-select" class="form-select form-select-sm"
+                                    onchange="switchEvaluationModel()">
+                                    <option value="catboost">CatBoost (GBDT Regressor)</option>
+                                    <option value="prophet">Facebook Prophet</option>
+                                    <option value="arima">ARIMA (AutoARIMA)</option>
+                                    <option value="ma4">Moving Average (4-Week)</option>
+                                    <option value="naive">Naive Baseline (Lag-1)</option>
+                                </select>
+                                <a href="/download-evaluation-csv" download="model_evaluation_report.csv"
+                                    class="btn btn-outline btn-sm"
+                                    title="Export holdout evaluation benchmark metrics as CSV">
+                                    <i data-lucide="download" class="btn-icon"></i>
+                                    <span>Export Metrics (CSV)</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="eval-specs-grid">
+                            <div class="eval-spec-item">
+                                <span class="spec-label">Execution Status</span>
+                                <span class="spec-val text-success font-semibold" id="eval-status-val">Completed /
+                                    Benchmarked</span>
+                            </div>
+                            <div class="eval-spec-item">
+                                <span class="spec-label">Training Period</span>
+                                <span class="spec-val" id="eval-train-period">90 Weeks (up to 2026-07-27)</span>
+                            </div>
+                            <div class="eval-spec-item">
+                                <span class="spec-label">Evaluation Holdout</span>
+                                <span class="spec-val" id="eval-holdout-period">8 Weeks (2026-08-24 to
+                                    2026-10-12)</span>
+                            </div>
+                            <div class="eval-spec-item">
+                                <span class="spec-label">Forecast Horizon</span>
+                                <span class="spec-val font-semibold">4 Weeks (Recursive)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inspected Model Metrics Bar -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title" id="inspect-model-mae-title">MAE (Units)</span>
+                                <div class="kpi-icon-wrap bg-lavender-subtle">
+                                    <i data-lucide="target" class="kpi-icon text-lavender"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="inspect-metric-mae">—</span>
+                                <span class="kpi-badge badge-neutral" id="inspect-badge-rank">Rank —</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Mean Absolute Error across holdout</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">WAPE (%)</span>
+                                <div class="kpi-icon-wrap bg-gold-subtle">
+                                    <i data-lucide="percent" class="kpi-icon text-gold"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="inspect-metric-wape">—</span>
+                                <span class="kpi-badge badge-success" id="inspect-badge-wape">Optimal</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Weighted Absolute Percentage Error</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">RMSE</span>
+                                <div class="kpi-icon-wrap bg-taupe-subtle">
+                                    <i data-lucide="trending-up" class="kpi-icon text-taupe"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="inspect-metric-rmse">—</span>
+                                <span class="kpi-badge badge-neutral">Penalizes Spikes</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Root Mean Squared Error</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Measured Runtime</span>
+                                <div class="kpi-icon-wrap bg-beige-subtle">
+                                    <i data-lucide="clock" class="kpi-icon text-charcoal"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="inspect-metric-runtime">—</span>
+                                <span class="kpi-badge badge-neutral">Seconds</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Recursive backtest execution speed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Horizon Accuracy Degradation & Chart -->
+                    <div class="eval-top-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Forecast Accuracy by Horizon Step</h2>
+                                    <p class="card-subtitle">Error progression across recursive 1 to 4 week forecasting
+                                        steps</p>
+                                </div>
+                                <span class="badge badge-accent">Backtest</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Forecast Horizon</th>
+                                            <th class="text-right">MAE (Units)</th>
+                                            <th class="text-right">WAPE (%)</th>
+                                            <th class="text-right">Test Observations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="horizon-tbody">
+                                        <tr>
+                                            <td colspan="4" class="table-empty">Loading horizon breakdown...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Error Progression Across Horizon Weeks</h2>
+                                    <p class="card-subtitle">Dual-axis progression: WAPE Error % (left axis) vs MAE
+                                        Units (right axis)</p>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="chart-horizon-error"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Model Limitations & Failure Cases Analysis -->
+                    <div class="eval-details-grid">
+                        <!-- Model Limitations Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Model Specifications & Limitations</h2>
+                                    <p class="card-subtitle">Architectural behavior, assumptions, and edge cases</p>
+                                </div>
+                                <span class="badge badge-neutral" id="inspect-model-cat-badge">Machine Learning</span>
+                            </div>
+                            <div class="model-limits-box" id="inspect-model-limits">
+                                <p class="limits-desc" id="inspect-limits-desc">Loading model architectural
+                                    description...</p>
+                                <div class="pros-cons-grid">
+                                    <div class="pro-box">
+                                        <span class="pro-title"><i data-lucide="check" class="icon-xs text-success"></i>
+                                            Advantages:</span>
+                                        <p id="inspect-pros-text">—</p>
+                                    </div>
+                                    <div class="con-box">
+                                        <span class="con-title"><i data-lucide="alert-triangle"
+                                                class="icon-xs text-warning"></i> Known Limitations:</span>
+                                        <p id="inspect-cons-text">—</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extreme Outlier Failure Cases -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Outlier Event & Failure Case Analysis</h2>
+                                    <p class="card-subtitle">Post-mortem investigation into extreme forecast variances
+                                    </p>
+                                </div>
+                                <span class="badge badge-danger">Diagnostics</span>
+                            </div>
+                            <div id="failure-cases-content" class="failures-scrollable">
+                                <p class="text-muted">Loading failure cases...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Accuracy Breakdown -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Category-Level Backtest Accuracy</h2>
+                                <p class="card-subtitle">Model precision broken down across retail product lines</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Category</th>
+                                        <th class="text-right">MAE</th>
+                                        <th class="text-right">WAPE (%)</th>
+                                        <th class="text-right">Sample Observations</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="category-tbody">
+                                    <tr>
+                                        <td colspan="4" class="table-empty">Loading category breakdown...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 1.3 MODEL COMPARISON PANE ── -->
+                <section class="tab-pane" id="tab-dev-comparison">
+                    <!-- Approved Model Status Banner -->
+                    <div class="card model-approval-banner" id="approval-banner">
+                        <div class="approval-banner-inner">
+                            <div class="approval-badge-box">
+                                <i data-lucide="shield-check" class="icon-md text-lavender"></i>
+                            </div>
+                            <div class="approval-info">
+                                <span class="sub-label">Current Active Production Model</span>
+                                <h2 class="approval-title" id="approved-model-title">CatBoost Regressor (GBDT)</h2>
+                                <p class="approval-desc" id="approved-model-desc">Approved for use in Retailer View.
+                                    Retailer demand forecasts and business reports are generated using this model
+                                    pipeline.</p>
+                            </div>
+                            <div class="approval-meta">
+                                <span class="meta-tag" id="approved-meta-date">Approved: Today</span>
+                                <span class="meta-tag badge-success" id="approved-meta-user">Data Science
+                                    Sign-off</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5 Model Comparison Cards Grid -->
+                    <div class="comparison-cards-grid" id="comparison-cards-container">
+                        <!-- Populated dynamically with all 5 models -->
+                        <div class="card model-card loading-card">Loading 5-model evaluation benchmarks...</div>
+                    </div>
+
+                    <!-- Leaderboard Benchmark Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Empirical Benchmark Leaderboard</h2>
+                                <p class="card-subtitle">Strict chronological holdout backtest on identical test periods
+                                    across all 5 models</p>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <span class="badge badge-accent">Measured Results Only</span>
+                                <a href="/download-comparison-csv" download="model_comparison_leaderboard.csv"
+                                    class="btn btn-outline btn-sm"
+                                    title="Export 5-model leaderboard comparison benchmark as CSV">
+                                    <i data-lucide="download" class="btn-icon"></i>
+                                    <span>Export Leaderboard (CSV)</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Model Architecture</th>
+                                        <th>Category</th>
+                                        <th class="text-right">MAE (Units)</th>
+                                        <th class="text-right">WAPE (%)</th>
+                                        <th class="text-right">RMSE</th>
+                                        <th class="text-right">Runtime (s)</th>
+                                        <th>Production Approval</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="comparison-leaderboard-tbody">
+                                    <tr>
+                                        <td colspan="8" class="table-empty">Loading comparison leaderboard...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Model Actual vs Predicted Timeline Chart -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Multi-Model Demand Trajectory Comparison</h2>
+                                <p class="card-subtitle">Actual held-out ground truth overlaid against all 5 models</p>
+                            </div>
+                            <div class="chart-legend-box" id="legend-multimodel">
+                                <!-- Dynamic multi-model legend badges -->
+                            </div>
+                        </div>
+                        <div class="chart-canvas-wrap large-canvas">
+                            <canvas id="chart-multimodel-timeline"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 1.4 EXPERIMENT HISTORY PANE ── -->
+                <section class="tab-pane" id="tab-dev-history">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Completed Forecasting Experiments</h2>
+                                <p class="card-subtitle">Audited record of completed runs with training horizons,
+                                    winning models, and runtime</p>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="/download-experiments-csv" download="experiment_history_report.csv"
+                                    class="btn btn-outline btn-sm" title="Export audited experiment history as CSV">
+                                    <i data-lucide="download" class="btn-icon"></i>
+                                    <span>Export History (CSV)</span>
+                                </a>
+                                <button class="btn btn-secondary btn-sm" onclick="runBenchmarkModal()">
+                                    <i data-lucide="play" class="btn-icon"></i>
+                                    <span>New Evaluation Run</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Experiment ID</th>
+                                        <th>Timestamp</th>
+                                        <th>Holdout Period</th>
+                                        <th>Horizon</th>
+                                        <th>Models Evaluated</th>
+                                        <th>Winning Model</th>
+                                        <th class="text-right">Best WAPE (%)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="experiments-history-tbody">
+                                    <tr>
+                                        <td colspan="8" class="table-empty">Loading experiment history...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 1.5 DEVELOPER SETTINGS PANE ── -->
+                <section class="tab-pane" id="tab-dev-settings">
+                    <div class="settings-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Evaluation & Benchmark Settings</h2>
+                                    <p class="card-subtitle">Configure backtesting parameters and model validation
+                                        protocols</p>
+                                </div>
+                            </div>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label class="form-label">Evaluation Holdout Window</label>
+                                    <select id="setting-holdout-weeks" class="form-select">
+                                        <option value="8" selected>8 Weeks (Standard Chronological Holdout)</option>
+                                        <option value="4">4 Weeks (Single Horizon Step)</option>
+                                    </select>
+                                    <span class="form-help">Number of trailing weeks used for rolling-origin
+                                        evaluation.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Active Approved Production Model</label>
+                                    <select id="setting-approved-model" class="form-select">
+                                        <option value="catboost">CatBoost Regressor (GBDT)</option>
+                                        <option value="prophet">Facebook Prophet</option>
+                                        <option value="arima">ARIMA (AutoARIMA)</option>
+                                        <option value="ma4">Moving Average (4-Week)</option>
+                                        <option value="naive">Naive Baseline</option>
+                                    </select>
+                                    <span class="form-help">Model used by Retailer View to generate customer demand
+                                        predictions.</span>
+                                </div>
+                                <div class="form-actions">
+                                    <button class="btn btn-primary" onclick="saveDevSettings()">Save
+                                        Configuration</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">System Infrastructure Status</h2>
+                                    <p class="card-subtitle">Database, Python virtualenv, and model artifact status</p>
+                                </div>
+                            </div>
+                            <div class="infra-status-list">
+                                <div class="infra-item">
+                                    <div class="infra-info">
+                                        <span class="infra-title">MySQL Database Connection</span>
+                                        <span class="infra-sub">3306 @ localhost / retail_forecasting</span>
+                                    </div>
+                                    <span class="badge badge-success">Connected</span>
+                                </div>
+                                <div class="infra-item">
+                                    <div class="infra-info">
+                                        <span class="infra-title">CatBoost Model Artifact</span>
+                                        <span class="infra-sub">artifacts/catboost_demand.cbm (44 MB)</span>
+                                    </div>
+                                    <span class="badge badge-success">Loaded</span>
+                                </div>
+                                <div class="infra-item">
+                                    <div class="infra-info">
+                                        <span class="infra-title">Evaluation Results Directory</span>
+                                        <span class="infra-sub">artifacts/evaluation/ (JSON runs persisted)</span>
+                                    </div>
+                                    <span class="badge badge-success">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ╔══════════════════════════════════════════════════════╗
+                     ║ WORKSPACE 2: RETAILER VIEW PANES                   ║
+                     ╚══════════════════════════════════════════════════════╝ -->
+
+                <!-- ── 2.1 BUSINESS OVERVIEW PANE ── -->
+                <section class="tab-pane" id="tab-ret-overview">
+                    <!-- 4 Summary Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Total Projected Demand (4W)</span>
+                                <div class="kpi-icon-wrap bg-lavender-subtle">
+                                    <i data-lucide="package" class="kpi-icon text-lavender"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="ret-kpi-total-units">—</span>
+                                <span class="kpi-badge badge-neutral">Units</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext" id="ret-kpi-revenue-est">Across all stores & channels</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Products with Rising Demand</span>
+                                <div class="kpi-icon-wrap bg-gold-subtle">
+                                    <i data-lucide="trending-up" class="kpi-icon text-gold"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value text-success" id="ret-kpi-rising">—</span>
+                                <span class="kpi-badge badge-success">Growth ▲</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Higher than recent 4-week average</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Products with Declining Demand</span>
+                                <div class="kpi-icon-wrap bg-taupe-subtle">
+                                    <i data-lucide="trending-down" class="kpi-icon text-taupe"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value text-muted" id="ret-kpi-declining">—</span>
+                                <span class="kpi-badge badge-neutral">Cooling ▼</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Lower than recent 4-week average</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Forecast Reliability Score</span>
+                                <div class="kpi-icon-wrap bg-beige-subtle">
+                                    <i data-lucide="shield-check" class="kpi-icon text-charcoal"></i>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="ret-kpi-reliability">—%</span>
+                                <span class="kpi-badge badge-success" id="ret-kpi-rel-badge">High Confidence</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-subtext">Series passing stability criteria</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historical Actual Sales vs 4-Week Forward Demand Forecast Chart with Safe Replenishment Bounds -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Historical Actual Sales vs. 4-Week Forward Demand Forecast</h2>
+                                <p class="card-subtitle">Continuous weekly demand trajectory: 8-week verified retail store sales transitioned into the CatBoost 4-week forward prediction horizon with 90% confidence inventory safety bands</p>
+                            </div>
+                            <div class="chart-legend-box" id="legend-retail-timeline">
+                                <span class="legend-indicator bg-taupe"></span>
+                                <span class="legend-text">Historical Actual Sales (Past 8 Weeks)</span>
+                                <span class="legend-divider">|</span>
+                                <span class="legend-indicator bg-lavender"></span>
+                                <span class="legend-text">CatBoost Demand Forecast (Next 4 Weeks)</span>
+                                <span class="legend-divider">|</span>
+                                <span class="legend-indicator bg-gold"></span>
+                                <span class="legend-text">Replenishment Safety Range (±8% Buffer)</span>
+                            </div>
+                        </div>
+                        <div class="chart-canvas-wrap large-canvas">
+                            <canvas id="chart-retail-history-forecast"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Product Demand Highlights: Top Demand & Growth (50:50 Balanced Ratio) -->
+                    <div class="charts-grid-equal">
+                        <!-- Top Demand Products (50%) -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Highest Forecast Demand Products</h2>
+                                    <p class="card-subtitle">SKUs expected to drive maximum volume next month</p>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th class="text-right">Forecast Units</th>
+                                            <th class="text-right">Growth vs Past 4W</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ret-top-demand-tbody">
+                                        <tr>
+                                            <td colspan="4" class="table-empty">Loading top demand products...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Top Growth Products (50%) -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Fastest Growing Demand SKUs</h2>
+                                    <p class="card-subtitle">Products with highest percentage increase in demand</p>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th class="text-right">Forecast Units</th>
+                                            <th class="text-right">Growth %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ret-top-growth-tbody">
+                                        <tr>
+                                            <td colspan="4" class="table-empty">Loading top growth products...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Approved Model Banner for Retailers (Positioned at the end of the page) -->
+                    <div class="card retailer-model-banner">
+                        <div class="ret-banner-content">
+                            <div class="ret-banner-badge">
+                                <i data-lucide="store" class="icon-md text-taupe"></i>
+                            </div>
+                            <div class="ret-banner-info">
+                                <span class="sub-label">Retail Planning Engine</span>
+                                <h2 class="banner-title">4-Week Forward Demand Outlook</h2>
+                                <p class="banner-desc">Forecasts generated using the data-science approved <strong><span
+                                            id="ret-approved-model-label">CatBoost</span></strong> model. Optimized for
+                                    inventory planning and replenishment.</p>
+                            </div>
+                            <div class="ret-banner-actions">
+                                <button class="btn btn-secondary btn-sm" id="btn-gen-forecast-overview" onclick="generateForecast(this)">
+                                    <i data-lucide="refresh-cw" class="btn-icon" id="btn-gen-forecast-overview-icon"></i>
+                                    <span id="btn-gen-forecast-overview-label">Update Forecast</span>
+                                </button>
+                                <a href="/view-pdf" target="_blank" class="btn btn-ghost btn-sm"
+                                    title="View Executive Business Report in new tab">
+                                    <i data-lucide="eye" class="btn-icon"></i>
+                                    <span>View PDF</span>
+                                </a>
+                                <a href="/download-pdf" download="executive_demand_report.pdf"
+                                    class="btn btn-primary btn-sm"
+                                    title="Download Executive Business Demand Report (PDF)">
+                                    <i data-lucide="file-text" class="btn-icon"></i>
+                                    <span>Download PDF</span>
+                                </a>
+                                <a href="/download-csv" download="retail_demand_forecast.csv"
+                                    class="btn btn-outline btn-sm"
+                                    title="Export 4-Week Forecast CSV with inventory indicators">
+                                    <i data-lucide="file-spreadsheet" class="btn-icon"></i>
+                                    <span>Download CSV</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 2.2 DEMAND FORECASTS PANE (EXPLORER) ── -->
+                <section class="tab-pane" id="tab-ret-forecasts">
+                    <!-- Filters Panel -->
+                    <div class="filter-panel">
+                        <div class="filter-panel-header">
+                            <div class="filter-title-wrap">
+                                <i data-lucide="sliders-horizontal" class="icon-sm text-taupe"></i>
+                                <span class="font-semibold text-charcoal">Forecast Filter Console</span>
+                                <span class="filter-count-badge" id="active-filter-indicator">All Records</span>
+                            </div>
+                            <button class="btn btn-ghost btn-sm" id="btn-reset-filters" onclick="resetFilters()">
+                                <i data-lucide="x" class="btn-icon"></i>
+                                <span>Reset Filters</span>
+                            </button>
+                        </div>
+
+                        <div class="filter-controls-grid">
+                            <div class="filter-group">
+                                <label for="filter-category" class="filter-label">Product Category</label>
+                                <div class="select-wrapper">
+                                    <select id="filter-category" class="form-select" onchange="applyFilters()">
+                                        <option value="all">All Categories</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="select-chevron"></i>
+                                </div>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="filter-store" class="filter-label">Retail Store Location</label>
+                                <div class="select-wrapper">
+                                    <select id="filter-store" class="form-select" onchange="applyFilters()">
+                                        <option value="all">All Stores</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="select-chevron"></i>
+                                </div>
+                            </div>
+
+                            <!-- <div class="filter-group">
+                                <label for="filter-channel" class="filter-label">Sales Channel</label>
+                                <div class="select-wrapper">
+                                    <select id="filter-channel" class="form-select" onchange="applyFilters()">
+                                        <option value="all">All Channels</option>
+                                        <option value="offline">Offline Stores</option>
+                                        <option value="online">Online eCommerce</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="select-chevron"></i>
+                                </div>
+                            </div> -->
+
+                            <div class="filter-group">
+                                <label for="filter-horizon" class="filter-label">Forecast Horizon</label>
+                                <div class="select-wrapper">
+                                    <select id="filter-horizon" class="form-select" onchange="applyFilters()">
+                                        <option value="all">All 4 Weeks</option>
+                                        <option value="1">Week 1 (Next Week)</option>
+                                        <option value="2">Week 2</option>
+                                        <option value="3">Week 3</option>
+                                        <option value="4">Week 4</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="select-chevron"></i>
+                                </div>
+                            </div>
+
+                            <div class="filter-group search-group">
+                                <label for="filter-search" class="filter-label">Search Product</label>
+                                <div class="search-input-wrapper">
+                                    <i data-lucide="search" class="search-icon"></i>
+                                    <input type="text" id="filter-search" class="form-input search-input"
+                                        placeholder="Search by name or product ID (e.g. Samsung, P0001)..."
+                                        oninput="debounceSearch()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtered Summary KPI Banner with Explicit Units -->
+                    <div class="explorer-kpi-bar">
+                        <div class="explorer-kpi-item">
+                            <span class="label">Forecasted Units in Demand</span>
+                            <span class="value" id="exp-total-units">—</span>
+                        </div>
+                        <!-- <div class="explorer-kpi-item">
+                            <span class="label">Matching Series [Variants]</span>
+                            <span class="value" id="exp-series-count">—</span>
+                        </div> -->
+                        <div class="explorer-kpi-item">
+                            <span class="label">Average Demand Per Variants
+                            </span>
+                            <span class="value" id="exp-avg-units">—</span>
+                        </div>
+                        <div class="explorer-kpi-item highlight">
+                            <span class="label">Top Product in Selection</span>
+                            <span class="value highlight-product-name" id="exp-top-product">—</span>
+                        </div>
+                    </div>
+
+                    <!-- Geographic Demand Intelligence: State-wise Performance Map & Prediction Table -->
+                    <div class="card geo-forecast-card" id="geo-forecast-section">
+                        <div class="card-header geo-card-header">
+                            <div class="geo-header-title-wrap">
+                                <div class="geo-title-icon">
+                                    <i data-lucide="map-pin" class="icon-primary"></i>
+                                </div>
+                                <div>
+                                    <h2 class="card-title">State-wise Performance</h2>
+                                    <p class="card-subtitle">Geographic demand forecast & revenue projection across
+                                        Indian retail hubs</p>
+                                </div>
+                            </div>
+                            <div class="geo-header-actions">
+                                <div class="geo-view-switch">
+                                    <button type="button" class="geo-switch-btn active" id="btn-geo-view-city"
+                                        onclick="switchGeoView('city')">
+                                        <i data-lucide="building-2" class="btn-icon"></i>
+                                        <span>City Outlets</span>
+                                    </button>
+                                    <button type="button" class="geo-switch-btn" id="btn-geo-view-state"
+                                        onclick="switchGeoView('state')">
+                                        <i data-lucide="map" class="btn-icon"></i>
+                                        <span>State Aggregation</span>
+                                    </button>
+                                </div>
+                                <div class="geo-metric-badge" id="geo-active-kpi-badge">
+                                    <span class="badge-dot"></span>
+                                    <span id="geo-total-rev-summary">14 Outlets • ₹346.05 Cr Projected</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="geo-layout-container">
+                            <!-- Left: Interactive High-Definition Image Map with Pins & Smooth Zoom -->
+                            <div class="geo-map-panel">
+                                <div class="geo-map-canvas-wrap" id="geo-map-container">
+                                    <!-- Zoom & Pan Stage -->
+                                    <div class="geo-image-map-stage" id="geo-map-stage">
+                                        <!-- Image Wrapper maintains exact 1024x768 aspect ratio -->
+                                        <div class="geo-map-image-wrapper" id="geo-map-image-wrapper">
+                                            <img src="india_map.png" alt="India Political Retail Hubs Map"
+                                                class="geo-india-map-img" id="geo-india-map-img" draggable="false">
+                                            <!-- Store Pins Layer dynamically dropped ON the image -->
+                                            <div class="geo-pins-layer" id="geo-pins-layer"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interactive Zoom Controls Overlay -->
+                                    <div class="geo-map-overlay-controls">
+                                        <div class="map-zoom-btn-group">
+                                            <button type="button" class="btn-zoom-control" onclick="zoomIndiaMap(0.25)"
+                                                title="Zoom In (+)">
+                                                <i data-lucide="plus" class="btn-icon"></i>
+                                            </button>
+                                            <span class="zoom-level-badge" id="zoom-level-display">125%</span>
+                                            <button type="button" class="btn-zoom-control" onclick="zoomIndiaMap(-0.25)"
+                                                title="Zoom Out (-)">
+                                                <i data-lucide="minus" class="btn-icon"></i>
+                                            </button>
+                                        </div>
+                                        <button type="button" class="btn-map-control" onclick="resetIndiaMapZoom()"
+                                            title="Reset All-India View">
+                                            <i data-lucide="maximize-2" class="btn-icon"></i>
+                                            <span>Center Map</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Floating Interactive Tooltip / Card -->
+                                    <div class="geo-pin-hover-tooltip" id="geo-pin-tooltip" style="display: none;">
+                                    </div>
+                                </div>
+
+                                <!-- Vibrant Multi-Color Demand Legend Bar -->
+                                <div class="geo-legend-bar">
+                                    <div class="legend-colorful-tiers">
+                                        <span class="legend-tier-item"><span class="tier-dot tier-emerald"></span>
+                                            Steady</span>
+                                        <span class="legend-tier-item"><span class="tier-dot tier-amber"></span> High
+                                            Demand</span>
+                                        <span class="legend-tier-item"><span class="tier-dot tier-coral"></span> Peak
+                                            Volume</span>
+                                        <span class="legend-tier-item"><span class="tier-dot tier-purple"></span> Super
+                                            Hub</span>
+                                    </div>
+                                    <div class="legend-gradient-pill colorful-spectrum"
+                                        title="Demand Spectrum: Steady to Super Hub"></div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Demand Forecast Prediction Table -->
+                            <div class="geo-table-panel">
+                                <div class="geo-table-header-bar">
+                                    <div>
+                                        <span class="geo-table-title" id="geo-table-header-title">Demand Forecast
+                                            Prediction</span>
+                                        <span class="geo-table-sub" id="geo-table-header-sub">14 Store Hubs</span>
+                                    </div>
+                                    <!-- <button class="btn btn-outline btn-xs" id="btn-refresh-geo"
+                                        onclick="loadGeoForecastData()" title="Refresh Geo Data">
+                                        <i data-lucide="refresh-cw" class="btn-icon"></i>
+                                        <span>Refresh</span>
+                                    </button> -->
+                                </div>
+                                <div class="geo-table-scroll-wrap">
+                                    <table class="geo-table" id="geo-prediction-table">
+                                        <thead>
+                                            <tr>
+                                                <th id="geo-col-name">City / Hub</th>
+                                                <th class="text-right">Forecast Demand [Units]</th>
+                                                <th class="text-right">Present Revenue (₹ Cr)</th>
+                                                <th class="text-right">Previous (Units)</th>
+                                                <th class="text-center">Change</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="geo-prediction-tbody">
+                                            <tr>
+                                                <td colspan="5" class="table-empty">Loading forecast predictions...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dual Charts: Weekly Horizon Trajectory & Category Breakdown -->
+                    <div class="charts-grid-equal">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">4-Week Horizon Trajectory</h2>
+                                    <p class="card-subtitle">Volume projection across consecutive weeks (W+1 to W+4)</p>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="chart-explorer-horizon"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Category Demand Distribution</h2>
+                                    <p class="card-subtitle">Projected 4-week demand unit volume ranked by category for
+                                        active store & channel filters</p>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="chart-explorer-category"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Forecast Data Table -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="table-header-left">
+                                <h2 class="card-title">Forecast Projections Detail</h2>
+                                <span class="table-row-count" id="table-row-count">Showing 0 records</span>
+                            </div>
+                            <div class="table-header-right">
+                                <div class="sort-selector-wrap">
+                                    <label for="table-sort-by" class="sort-label">Sort By:</label>
+                                    <select id="table-sort-by" class="form-select-sm" onchange="changeSort()">
+                                        <option value="predicted_units-desc">Demand (High to Low)</option>
+                                        <option value="predicted_units-asc">Demand (Low to High)</option>
+                                        <option value="product_name-asc">Product Name (A-Z)</option>
+                                        <option value="horizon_step-asc">Horizon (Week 1 to 4)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Code</th>
+                                        <th>Product Description</th>
+                                        <th>Category</th>
+                                        <th>Store</th>
+                                        <th>Sales Channel</th>
+                                        <th>Target Week</th>
+                                        <th>Horizon</th>
+                                        <th class="text-right">Predicted Demand</th>
+                                        <th>Forecast Reliability</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="explorer-tbody">
+                                    <tr>
+                                        <td colspan="9" class="table-empty">Loading forecast records...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Table Pagination Controls -->
+                        <div class="table-pagination">
+                            <div class="pagination-info" id="pagination-info">Page 1 of 1</div>
+                            <div class="pagination-buttons">
+                                <button class="btn btn-outline btn-sm" id="btn-prev-page" onclick="prevPage()" disabled>
+                                    <i data-lucide="chevron-left" class="btn-icon"></i>
+                                    <span>Previous</span>
+                                </button>
+                                <button class="btn btn-outline btn-sm" id="btn-next-page" onclick="nextPage()" disabled>
+                                    <span>Next</span>
+                                    <i data-lucide="chevron-right" class="btn-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Approved Model Banner & Run Metadata Bar (Placed at end of Demand Forecasts) -->
+                    <div class="card dataset-banner-card"
+                        style="border-left-color: #AF9AC9; margin-top: 24px; margin-bottom: 20px;">
+                        <div class="dataset-banner-header">
+                            <div class="banner-icon-box bg-lavender-subtle">
+                                <i data-lucide="cpu" class="icon-md text-lavender"></i>
+                            </div>
+                            <div class="banner-info">
+                                <div class="badge-row">
+                                    <span class="badge badge-accent" id="fc-meta-model">Model: CatBoost (GBDT)</span>
+                                    <span class="badge badge-success">Approved for Retail</span>
+                                    <span class="badge badge-neutral">Horizon: 4 Weeks</span>
+                                </div>
+                                <h2 class="banner-title">Forward Demand Forecast Explorer</h2>
+                                <p class="banner-desc">
+                                    Run Identifier: <code id="fc-meta-run-id">forecast_run_latest</code> • Generated:
+                                    <span id="fc-meta-timestamp">Current Run</span> • Grain: Product SKU × Store Outlet
+                                    × Sales Channel
+                                </p>
+                            </div>
+                            <div class="banner-actions">
+                                <button class="btn btn-secondary btn-sm" id="btn-gen-forecast-explorer" onclick="generateForecast(this)">
+                                    <i data-lucide="refresh-cw" class="btn-icon" id="btn-gen-forecast-explorer-icon"></i>
+                                    <span id="btn-gen-forecast-explorer-label">Generate Forecast</span>
+                                </button>
+                                <a href="/view-pdf" target="_blank" class="btn btn-ghost btn-sm"
+                                    title="View Executive Business Report in new tab">
+                                    <i data-lucide="eye" class="btn-icon"></i>
+                                    <span>View PDF</span>
+                                </a>
+                                <a href="/download-pdf" download="executive_demand_report.pdf"
+                                    class="btn btn-outline btn-sm"
+                                    title="Download Executive Business Demand Report (PDF)">
+                                    <i data-lucide="file-text" class="btn-icon"></i>
+                                    <span>Download PDF</span>
+                                </a>
+                                <a href="/download-csv" download="retail_demand_forecast.csv"
+                                    class="btn btn-primary btn-sm"
+                                    title="Export 4-Week Forecast CSV with inventory indicators">
+                                    <i data-lucide="file-spreadsheet" class="btn-icon"></i>
+                                    <span>Download CSV</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 2.3 PRODUCT INSIGHTS PANE ── -->
+                <section class="tab-pane" id="tab-ret-insights">
+                    <!-- Insights Header -->
+                    <div class="card insights-intro-card">
+                        <div class="insights-intro-header">
+                            <div>
+                                <span class="sub-label">Actionable Business Signals</span>
+                                <h2 class="card-title">Executive Product Demand Insights</h2>
+                                <p class="card-subtitle">Empirically grounded demand shifts compared to past 4-week
+                                    sales. Strict no-hallucination policy applied.</p>
+                            </div>
+                            <div class="insights-filter-pills">
+                                <button class="insight-pill active" onclick="filterInsightsTab('all')">All
+                                    Signals</button>
+                                <button class="insight-pill" onclick="filterInsightsTab('rising')">Rising Demand
+                                    (▲)</button>
+                                <button class="insight-pill" onclick="filterInsightsTab('declining')">Declining Demand
+                                    (▼)</button>
+                                <button class="insight-pill" onclick="filterInsightsTab('cautionary')">Cautionary / Risk
+                                    (⚠️)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rising Demand Products Section -->
+                    <div class="insight-section" id="section-insight-rising">
+                        <div class="insight-section-title">
+                            <i data-lucide="trending-up" class="icon-sm text-success"></i>
+                            <span>Products with Rising Demand (Next 4 Weeks vs Recent 4 Weeks)</span>
+                        </div>
+                        <div class="insights-grid" id="insights-rising-grid">
+                            <div class="card insight-card loading">Loading rising product signals...</div>
+                        </div>
+                    </div>
+
+                    <!-- Declining Demand Products Section -->
+                    <div class="insight-section" id="section-insight-declining">
+                        <div class="insight-section-title">
+                            <i data-lucide="trending-down" class="icon-sm text-taupe"></i>
+                            <span>Products with Declining Demand</span>
+                        </div>
+                        <div class="insights-grid" id="insights-declining-grid">
+                            <div class="card insight-card loading">Loading cooling product signals...</div>
+                        </div>
+                    </div>
+
+                    <!-- Cautionary & Risk Alerts Section -->
+                    <div class="insight-section" id="section-insight-cautionary">
+                        <div class="insight-section-title">
+                            <i data-lucide="alert-triangle" class="icon-sm text-warning"></i>
+                            <span>Forecasts Requiring Safety Buffers (Cautionary Risk Flags)</span>
+                        </div>
+                        <div class="insights-grid" id="insights-cautionary-grid">
+                            <div class="card insight-card loading">Loading risk signals...</div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 2.4 AI ASSISTANT PANE (GEMINI) ── -->
+                <section class="tab-pane" id="tab-ret-chat">
+                    <div class="chat-layout-card">
+                        <div class="chat-header">
+                            <div class="chat-header-profile">
+                                <div class="assistant-avatar">
+                                    <i data-lucide="bot"></i>
+                                </div>
+                                <div>
+                                    <div class="assistant-name-row">
+                                        <h2 class="assistant-name">Retail Demand Intelligence Assistant</h2>
+                                        <span class="badge badge-accent">Grounded Gemini</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-header-badges">
+                                <span class="badge badge-neutral"><i data-lucide="shield-check" class="badge-icon"></i>
+                                    Zero Hallucination Protocol</span>
+                                <span class="badge badge-neutral"><i data-lucide="terminal" class="badge-icon"></i>
+                                    Function Calling</span>
+                            </div>
+                        </div>
+
+                        <!-- Chat Messages Viewport -->
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message assistant" data-msg-id="msg_welcome">
+                                <div class="message-avatar">
+                                    <i data-lucide="bot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="chat-text-body">
+                                        <p>Hello! I am your <strong>Retail Business Assistant</strong>. I have direct
+                                            access
+                                            to your 4-week demand forecasts, verified product catalog names, monetary
+                                            revenue pricing, and regional store performance across Indian states and
+                                            cities.
+                                        </p>
+                                        <p>How can I help you today? You can ask about:</p>
+                                        <ul>
+                                            <li><strong>Top Growth SKUs:</strong> <em>"Which products are likely to see
+                                                    the
+                                                    biggest demand increase next month?"</em></li>
+                                            <li><strong>State & Regional Demand:</strong> <em>"Which state or city has
+                                                    more
+                                                    demand for Samsung mobiles or Apple iPhones?"</em></li>
+                                            <li><strong>Revenue Forecasts:</strong> <em>"What is the estimated revenue
+                                                    for
+                                                    top electronics next month?"</em></li>
+                                            <li><strong>Inventory Caution:</strong> <em>"Which products need an extra
+                                                    inventory safety buffer?"</em></li>
+                                        </ul>
+                                        <div class="welcome-suggested-prompts">
+                                            <span class="welcome-prompts-label">Suggested Prompts:</span>
+                                            <div class="welcome-prompts-chips">
+                                                <button type="button" class="prompt-chip"
+                                                    onclick="sendQuickPrompt('Which products are likely to see the biggest demand increase next month?')">
+                                                    📈 Biggest demand increase next month
+                                                </button>
+                                                <button type="button" class="prompt-chip"
+                                                    onclick="sendQuickPrompt('Which state or region has higher demand for Samsung mobiles?')">
+                                                    📍 State demand for Samsung mobiles
+                                                </button>
+                                                <button type="button" class="prompt-chip"
+                                                    onclick="sendQuickPrompt('What is the projected demand and revenue for the top 5 products next month?')">
+                                                    💰 Top products revenue projection
+                                                </button>
+                                                <button type="button" class="prompt-chip"
+                                                    onclick="sendQuickPrompt('Which products have reliability warnings or need safety stock?')">
+                                                    ⚠️ Reliability warnings
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-actions-toolbar" data-msg-id="msg_welcome">
+                                        <button class="chat-action-btn copy-btn" title="Copy response to clipboard"
+                                            onclick="copyChatMessage(this)">
+                                            <i data-lucide="copy" class="icon-xs"></i>
+                                            <span>Copy</span>
+                                        </button>
+                                        <div class="chat-feedback-group">
+                                            <button class="chat-action-btn feedback-btn thumbs-up"
+                                                title="Good response (Reward assistant)"
+                                                onclick="submitChatFeedback(this, 'positive')">
+                                                <i data-lucide="thumbs-up" class="icon-xs"></i>
+                                                <span>Good response</span>
+                                            </button>
+                                            <button class="chat-action-btn feedback-btn thumbs-down"
+                                                title="Bad response (Penalize & improve next time)"
+                                                onclick="submitChatFeedback(this, 'negative')">
+                                                <i data-lucide="thumbs-down" class="icon-xs"></i>
+                                                <span>Bad response</span>
+                                            </button>
+                                        </div>
+                                        <span class="feedback-ack-pill" style="display: none;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Input Box -->
+                        <div class="chat-input-wrapper">
+                            <div class="chat-input-bar">
+                                <textarea class="chat-textarea" id="chat-input"
+                                    placeholder="Ask about products, demand trends, state/city demand, revenue..."
+                                    rows="1" onkeydown="handleChatKey(event)"></textarea>
+                                <button class="btn btn-primary btn-chat-send" id="btn-send" onclick="sendMessage()">
+                                    <span>Send</span>
+                                    <i data-lucide="send" class="btn-icon"></i>
+                                </button>
+                            </div>
+                            <div class="chat-input-footer" style="justify-content: flex-end;">
+                                <span id="chat-char-counter">0 / 2000</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 2.5 REPORTS PANE ── -->
+                <section class="tab-pane" id="tab-ret-reports">
+                    <div class="reports-layout-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Executive Demand Planning Report</h2>
+                                    <p class="card-subtitle">Comprehensive 4-week retail demand forecast report for
+                                        procurement and operations</p>
+                                </div>
+                                <div class="report-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <a href="/download-pdf" download="executive_demand_report.pdf"
+                                        class="btn btn-primary btn-sm" title="Download Executive Business Report (PDF)">
+                                        <i data-lucide="file-text" class="btn-icon"></i>
+                                        <span>Download PDF</span>
+                                    </a>
+                                    <a href="/view-pdf" target="_blank" class="btn btn-outline btn-sm"
+                                        title="View interactive PDF in browser tab">
+                                        <i data-lucide="eye" class="btn-icon"></i>
+                                        <span>View PDF</span>
+                                    </a>
+                                    <a href="/download-csv" download="retail_demand_forecast.csv"
+                                        class="btn btn-outline btn-sm"
+                                        title="Download tabular forecast CSV with inventory indicators">
+                                        <i data-lucide="file-spreadsheet" class="btn-icon"></i>
+                                        <span>Download CSV</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="report-preview-box">
+                                <div class="report-header-summary">
+                                    <div class="rep-meta-col">
+                                        <span class="rep-label">Report Type:</span>
+                                        <span class="rep-val font-semibold">4-Week Forward Demand Forecast</span>
+                                    </div>
+                                    <div class="rep-meta-col">
+                                        <span class="rep-label">Approved Model:</span>
+                                        <span class="rep-val font-semibold text-lavender" id="rep-model-name">CatBoost
+                                            Regressor</span>
+                                    </div>
+                                    <div class="rep-meta-col">
+                                        <span class="rep-label">Target Weeks:</span>
+                                        <span class="rep-val" id="rep-target-weeks">Week 1 to Week 4</span>
+                                    </div>
+                                    <div class="rep-meta-col">
+                                        <span class="rep-label">Generated:</span>
+                                        <span class="rep-val" id="rep-gen-timestamp">Current Run</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-bullets">
+                                    <h3>Key Findings & Executive Scope:</h3>
+                                    <ul>
+                                        <li>Total 4-week demand volume is projected at <strong><span
+                                                    id="rep-total-volume">382,542 units</span></strong> across all
+                                            channels.</li>
+                                        <li><strong><span id="rep-rising-count">541 products</span></strong> are
+                                            projected to experience rising demand (+15% or higher vs recent history).
+                                        </li>
+                                        <li>Electronics and Accessories show strong online channel velocity, while
+                                            Groceries maintain steady weekly offline volume.</li>
+                                        <li>Over <strong><span id="rep-rel-score">94%</span></strong> of series maintain
+                                            stable forecast trajectories with standard inventory safety buffers.</li>
+                                        <li><strong>Inventory Attention:</strong> Priority SKUs operating below reorder
+                                            thresholds or facing near-term stockouts are flagged with stock coverage
+                                            ratios.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <h2 class="card-title">Downloadable Data & Integrity Reports</h2>
+                                    <p class="card-subtitle">Official exports for auditing, compliance, and supply chain
+                                        ERP integration</p>
+                                </div>
+                            </div>
+                            <div class="download-reports-list">
+                                <div class="report-dl-item">
+                                    <div class="report-dl-icon">
+                                        <i data-lucide="file-text" class="icon-sm text-lavender"></i>
+                                    </div>
+                                    <div class="report-dl-info">
+                                        <span class="report-dl-title">Executive Demand Planning Report (PDF)</span>
+                                        <span class="report-dl-desc">Official 10-section executive summary with
+                                            historical vs forecast chart, top demand SKUs, and inventory coverage
+                                            review.</span>
+                                    </div>
+                                    <div style="display: flex; gap: 6px;">
+                                        <a href="/download-pdf" download="executive_demand_report.pdf"
+                                            class="btn btn-primary btn-sm">Download PDF</a>
+                                        <a href="/view-pdf" target="_blank" class="btn btn-outline btn-sm">View PDF</a>
+                                    </div>
+                                </div>
+
+                                <div class="report-dl-item">
+                                    <div class="report-dl-icon">
+                                        <i data-lucide="file-spreadsheet" class="icon-sm text-gold"></i>
+                                    </div>
+                                    <div class="report-dl-info">
+                                        <span class="report-dl-title">Retail 4-Week Demand Forecast Report (CSV)</span>
+                                        <span class="report-dl-desc">Granular tabular records across 10,066 series with
+                                            closing stock, reorder point thresholds, and inventory-aware status
+                                            flags.</span>
+                                    </div>
+                                    <a href="/download-csv" download="retail_demand_forecast.csv"
+                                        class="btn btn-outline btn-sm">Download CSV</a>
+                                </div>
+
+                                <div class="report-dl-item">
+                                    <div class="report-dl-icon">
+                                        <i data-lucide="file-text" class="icon-sm text-taupe"></i>
+                                    </div>
+                                    <div class="report-dl-info">
+                                        <span class="report-dl-title">Data Quality & Validation Audit Report
+                                            (Markdown)</span>
+                                        <span class="report-dl-desc">Markdown report verifying 1,024,772 rows, duplicate
+                                            removal, calendar integrity, and price consistency.</span>
+                                    </div>
+                                    <div style="display: flex; gap: 6px;">
+                                        <a href="/download-quality-report" download="data_quality_report.md"
+                                            class="btn btn-outline btn-sm">Download MD</a>
+                                        <a href="/download-quality-csv" download="data_quality_report.csv"
+                                            class="btn btn-outline btn-sm">Download CSV</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ── 2.6 RETAILER SETTINGS PANE ── -->
+                <section class="tab-pane" id="tab-ret-settings">
+                    <div class="card max-w-xl">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Retailer Business Preferences</h2>
+                                <p class="card-subtitle">Display units, safety stock multipliers, and replenishment
+                                    alerts</p>
+                            </div>
+                        </div>
+                        <div class="settings-form">
+                            <div class="form-group">
+                                <label class="form-label">Display Currency</label>
+                                <select class="form-select">
+                                    <option value="INR" selected>Indian Rupee (₹ INR)</option>
+                                    <option value="USD">US Dollar ($ USD)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Inventory Safety Buffer Multiplier</label>
+                                <select class="form-select">
+                                    <option value="1.10">+10% Safety Buffer (Low Intermittency)</option>
+                                    <option value="1.15" selected>+15% Recommended Standard Buffer</option>
+                                    <option value="1.25">+25% Aggressive Safety Buffer</option>
+                                </select>
+                                <span class="form-help">Applied to cautionary product forecasts to prevent
+                                    stock-outs.</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Rising Demand Alert Threshold</label>
+                                <select class="form-select">
+                                    <option value="15">+15% Increase over 4W History</option>
+                                    <option value="25" selected>+25% Surge Demand Alert</option>
+                                    <option value="50">+50% Extreme Demand Surge</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary"
+                                    onclick="showToast('Business preferences saved successfully!', 'success')">Save
+                                    Preferences</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ═══ Benchmark Modal ═══ -->
+    <div class="modal-backdrop" id="benchmark-modal" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <i data-lucide="play" class="icon-sm text-lavender"></i>
+                    <h3 class="modal-title">Run 5-Model Benchmark Evaluation</h3>
+                </div>
+                <button class="btn-icon" onclick="closeBenchmarkModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-sm text-charcoal mb-3">This will run a rigorous rolling-origin backtest on the held-out
+                    test period across all 5 models:</p>
+                <ul class="benchmark-models-list">
+                    <li><strong>1. Naive Baseline:</strong> Lag-1 repeat</li>
+                    <li><strong>2. Moving Average:</strong> 4-week historical average</li>
+                    <li><strong>3. ARIMA:</strong> StatsForecast AutoARIMA</li>
+                    <li><strong>4. Facebook Prophet:</strong> Additive piecewise linear growth</li>
+                    <li><strong>5. CatBoost Regressor:</strong> Gradient Boosted Decision Trees</li>
+                </ul>
+                <div class="form-group mt-3">
+                    <label class="form-label">Holdout Duration</label>
+                    <select id="modal-holdout-weeks" class="form-select">
+                        <option value="8" selected>8 Weeks (Comprehensive Rolling Origin)</option>
+                        <option value="4">4 Weeks (Fast Benchmark)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeBenchmarkModal()">Cancel</button>
+                <button class="btn btn-primary" id="btn-start-benchmark" onclick="executeBenchmark()">Start
+                    Evaluation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ User Profile Card Modal ═══ -->
+    <div class="modal-backdrop" id="user-profile-modal" style="display: none;"
+        onclick="handleProfileBackdropClick(event)">
+        <div class="modal-box profile-modal-box">
+            <!-- Header (Pinned at Top) -->
+            <div class="modal-header profile-modal-header">
+                <div class="profile-header-user">
+                    <div class="profile-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div class="profile-header-text">
+                        <div class="profile-header-name-row">
+                            <h3 class="modal-title" id="profile-modal-username">User</h3>
+                            <span class="badge badge-accent profile-role-badge" id="profile-modal-role">Retailer</span>
+                        </div>
+                        <span class="profile-header-sub">Enterprise Profile & Store Configuration</span>
+                    </div>
+                </div>
+                <button class="btn-icon profile-close-btn" onclick="closeUserProfileModal()" title="Close"
+                    aria-label="Close profile modal"><i data-lucide="x"></i></button>
+            </div>
+
+            <!-- Form Wrapper containing scrollable body and pinned footer -->
+            <form id="profile-form" onsubmit="handleSaveProfile(event)" class="profile-modal-form-wrap">
+                <!-- Body (Scrollable if viewport is small) -->
+                <div class="modal-body profile-modal-body">
+
+                    <!-- Section 1: Contact & Store Information -->
+                    <div class="profile-section-card">
+                        <div class="profile-section-head">
+                            <div class="profile-section-title-wrap">
+                                <div class="profile-section-icon-badge">
+                                    <i data-lucide="store" class="icon-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="profile-section-title">Contact & Store Details</h4>
+                                    <span class="profile-section-sub">Primary point of contact & registered retail
+                                        entity</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-fields-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="profile-phone">
+                                    <i data-lucide="phone" class="icon-xs"></i>
+                                    <span>Phone Number</span>
+                                </label>
+                                <input type="tel" id="profile-phone" class="form-input profile-input"
+                                    placeholder="+91 98765 43210" autocomplete="tel">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="profile-email">
+                                    <i data-lucide="mail" class="icon-xs"></i>
+                                    <span>Email Address</span>
+                                </label>
+                                <input type="email" id="profile-email" class="form-input profile-input"
+                                    placeholder="user@retailstore.com" autocomplete="email">
+                            </div>
+                        </div>
+
+                        <div class="form-group profile-field-full">
+                            <label class="form-label" for="profile-business-name">
+                                <i data-lucide="building-2" class="icon-xs"></i>
+                                <span>Business or Store Name</span>
+                            </label>
+                            <input type="text" id="profile-business-name" class="form-input profile-input"
+                                placeholder="e.g. Apex Retail Hub — Delhi NCR Outlet">
+                            <span class="profile-form-hint">Stored securely for business demand forecasts and
+                                personalized inventory planning.</span>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Security & Credentials -->
+                    <div class="profile-section-card">
+                        <div class="profile-section-head">
+                            <div class="profile-section-title-wrap">
+                                <div class="profile-section-icon-badge">
+                                    <i data-lucide="shield-check" class="icon-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="profile-section-title">Security & Credentials</h4>
+                                    <span class="profile-section-sub">Leave blank to retain your current password</span>
+                                </div>
+                            </div>
+                            <span class="profile-optional-badge">Optional</span>
+                        </div>
+
+                        <div class="form-group profile-field-full">
+                            <label class="form-label" for="profile-current-password">
+                                <i data-lucide="lock" class="icon-xs"></i>
+                                <span>Current Password</span>
+                            </label>
+                            <input type="password" id="profile-current-password" class="form-input profile-input"
+                                placeholder="Enter current password to authorize password change"
+                                autocomplete="current-password">
+                        </div>
+
+                        <div class="profile-fields-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="profile-new-password">
+                                    <i data-lucide="key" class="icon-xs"></i>
+                                    <span>New Password</span>
+                                </label>
+                                <input type="password" id="profile-new-password" class="form-input profile-input"
+                                    placeholder="Min 4 characters" autocomplete="new-password">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="profile-confirm-password">
+                                    <i data-lucide="check" class="icon-xs"></i>
+                                    <span>Confirm New Password</span>
+                                </label>
+                                <input type="password" id="profile-confirm-password" class="form-input profile-input"
+                                    placeholder="Re-type new password" autocomplete="new-password">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Alert Banner -->
+                    <div class="profile-alert" id="profile-alert" style="display: none;"></div>
+                </div>
+
+                <!-- Footer Action Buttons (Pinned at Bottom) -->
+                <div class="modal-footer profile-modal-footer">
+                    <button type="button" class="btn btn-secondary profile-btn-cancel"
+                        onclick="closeUserProfileModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary profile-btn-save" id="btn-save-profile">
+                        <span class="btn-text">
+                            <i data-lucide="save" class="btn-icon"></i>
+                            <span>Save Profile Changes</span>
+                        </span>
+                        <span class="btn-loader" style="display: none;"><i data-lucide="loader-2"
+                                class="spin"></i></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══ Toast Notification Container ═══ -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <!-- Application Script -->
+    <script src="app.js?v=20261028_04"></script>
+    <script>
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+
+</html>
